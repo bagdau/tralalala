@@ -1,0 +1,122 @@
+version: "3.1"
+
+services:
+  db_kr:
+    container_name: djk-postgres
+    image: postgres:14.0-alpine
+    environment:
+      - POSTGRES_PASSWORD=N6BDpzAwt7u
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=parser_k
+      - POSTGRES_DB_ROOF=roof
+      - POSTGRES_DB_RBD=rbd
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend_kr:
+    container_name: djk-backend
+    build: ./backend
+    command: python3 manage.py runserver 0.0.0.0:8000
+    restart: always
+    environment:
+      - ENV_DEBUG=True
+      - POSTGRES_PASSWORD=N6BDpzAwt7u
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=parser_k
+      - POSTGRES_DB_ROOF=roof
+      - POSTGRES_DB_RBD=rbd
+      - POSTGRES_HOST=db_kr
+      - POSTGRES_PORT=5432
+      - DATABASE_URL=postgresql://postgres:N6BDpzAwt7u@db_kr:5432/parser_k?schema=public
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./backend:/app
+      - ./storage/static:/app/static
+      - ./storage/media:/app/media
+      - ./storage/upload:/app/upload
+      - ./storage/logs:/app/logs
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db_kr
+      - browser_parser
+    networks:
+      - app-network
+
+  browser_parser:
+    container_name: djk-browser
+    build: ./backend/browser-parser
+    command: npm run start
+    restart: always
+    ports:
+      - "4001:4000"     # <--- Обновил порты
+    environment:
+      - POSTGRES_PASSWORD=N6BDpzAwt7u
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=parser_k
+      - POSTGRES_DB_ROOF=roof
+      - POSTGRES_DB_RBD=rbd
+      - POSTGRES_HOST=db_kr
+      - POSTGRES_PORT=5432
+      - BASE_URL=http://localhost
+      - PORT=4000       # <--- Важно, если читается из process.env.PORT
+    volumes:
+      - ./backend/browser-parser/src:/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db_kr
+    networks:
+      - app-network
+
+  logger:
+    container_name: djk-logger
+    build: ./logger
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logger:/app
+      - ./storage/logs:/app/logs
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db_kr
+      - backend_kr
+      - browser_parser
+    networks:
+      - app-network
+
+  pgadmin_kr:
+    image: dpage/pgadmin4:latest
+    container_name: djk-pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: pgadmin4@gh@
+      PGADMIN_ENABLE_FILE_UPLOADS: "True"
+      PGADMIN_ENABLE_FILE_DOWNLOADS: "True"
+    ports:
+      - "5556:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin_storage:/var/lib/pgadmin/storage
+    depends_on:
+      - db_kr
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgadmin_data:
+  postgres_data:
