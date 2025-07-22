@@ -9,7 +9,7 @@ docker-compose exec -it djk-backend python manage.py createsuperuser
 ```
 
 
-### Если таблица базы-данных не поднимается? тогда вам чит-код (вниз)
+### Если таблица базы-данных не поднимается? тогда вам чит-код (вниз).
 ```sh
 docker exec -t djk-postgres pg_dump -U postgres parser_k > dump.sql
 ## clean db
