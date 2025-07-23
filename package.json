@@ -1,0 +1,12 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "description": "1. Clone the repo ```sh git clone git_url docker-compose build docker-compose up -d docker-compose exec -it dj-backend python manage.py migrate docker-compose exec -it dj-backend python manage.py createsuperuser ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

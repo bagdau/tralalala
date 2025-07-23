@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>lloger Viewer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2em;
+      }
+      #logList {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        background: #f0f0f0;
+        border-radius: 4px;
+      }
+      button {
+        padding: 8px 16px;
+        margin-bottom: 1em;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📋 Log Viewer</h1>
+    <button onclick="clearLogs()">Clear Logs</button>
+    <ul id="logList"></ul>
+
+    <script>
+      const logList = document.getElementById("logList");
+
+      async function fetchLogs() {
+        const response = await fetch("http://localhost:8000/logs");
+        const logs = await response.json();
+
+        logList.innerHTML = "";
+        logs.forEach((log) => {
+          const li = document.createElement("li");
+          li.textContent = log;
+          logList.appendChild(li);
+        });
+      }
+
+      async function clearLogs() {
+        const response = await fetch("http://localhost:8000/logs", {
+          method: "DELETE",
+        });
+        const result = await response.json();
+        console.log(result);
+
+        logList.innerHTML = "";
+        fetchLogs(); // Optional: re-check server to confirm
+      }
+
+      // Poll logs every 3 seconds
+      setInterval(fetchLogs, 3000);
+      fetchLogs();
+    </script>
+  </body>
+</html>
