@@ -1,6 +1,6 @@
 from nicegui import ui
 import asyncio
-from frontend.components.header import main_layout
+from components.header import main_header
 from components.card_container import card_container
 
 logs = [
@@ -52,4 +52,4 @@ def parsers_numbers():
 
         card_container(inner_content)  # <-- вот тут используешь компонент
 
-    main_layout(content)
+    main_header(content)

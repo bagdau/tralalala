@@ -1,5 +1,5 @@
 from nicegui import ui
-from frontend.components.header import main_layout
+from components.header import main_header
 from components.card_container import card_container
 
 class State:
@@ -41,7 +41,7 @@ def realty_page():
                 ui.label('Выбор объектов:').style('font-size: 16px;')
                 ui.select(['Все', 'Квартира', 'Дом'], value=state.object_type).bind_value(state, 'object_type').style('min-width:130px')
 
-        # Вторая строка фильтров (по центру)
+
         with ui.row().classes('gap-4 items-end').style('justify-content: center; width: 100%; margin-top: 10px;'):
             with ui.column().classes('gap-1'):
                 ui.label('Цена:').style('font-size: 16px;')
@@ -80,7 +80,7 @@ def realty_page():
             {'name': 'added', 'label': 'Дата добавления'},
             {'name': 'details', 'label': 'Подробнее'},
         ]
-        rows = []  # подставь свои данные
+        rows = []  
         ui.table(columns=columns, rows=rows, row_key='id').style('width: 100%; margin-top: 32px; font-size: 17px;')
 
     # Специальный большой card-контейнер только для этой страницы:
@@ -91,10 +91,10 @@ def realty_page():
             with ui.element('div').style(
                 'background: #fff; max-width: 1200px; width: 100%; '
                 'padding: 48px 44px 40px 44px; '
-                'font-size: 18px; '  # применится ко всем вложенным элементам!
+                'font-size: 18px; '  
                 'box-shadow: 0px 8px 32px 0px rgba(0,0,0,0.09); border-radius: 26px; '
                 'display: flex; flex-direction: column; align-items: center; gap: 28px;'
             ):
                 inner()
 
-    main_layout(lambda: big_card(content))
+    main_header(lambda: big_card(content))
