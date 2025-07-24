@@ -2,7 +2,7 @@ from nicegui import ui
 
 ui.add_head_html('<link rel="stylesheet" href="static/main.css">')
 
-def main_layout(content_func):
+def main_header(content_func):
     with ui.header().style(
         'background: #332a26;'
         'height: 100px;'

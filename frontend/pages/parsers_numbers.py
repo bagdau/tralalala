@@ -1,6 +1,6 @@
 from nicegui import ui
 import asyncio
-from components.layout import main_layout
+from frontend.components.header import main_layout
 from components.card_container import card_container
 
 logs = [

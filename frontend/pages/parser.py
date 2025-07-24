@@ -1,7 +1,7 @@
 # pages/parser.py
 from nicegui import ui
 import asyncio
-from components.layout import main_layout
+from frontend.components.header import main_layout
 from components.card_container import card_container 
 
 logs = [
@@ -35,7 +35,7 @@ def parser_page():
                 ui.button('ЗАПУСТИТЬ ПАРСЕР', color='green').style('min-width: 188px; font-size: 16px; font-weight: 500;')
                 ui.button('ОСТАНОВИТЬ ПАРСЕР', color='red').style('min-width: 188px; font-size: 16px; font-weight: 500;')
                 ui.button('ОЧИСТИТЬ ЛОГИ', color='pink').style('min-width: 188px; font-size: 16px; font-weight: 500;')
-
+            ui.la
             ui.label('Логи парсера').style('font-weight: bold; font-size: 20px; margin-bottom: 12px; margin-top: 18px;')
 
             log_box = ui.markdown('```\n' + '\n'.join(logs) + '\n```') \
