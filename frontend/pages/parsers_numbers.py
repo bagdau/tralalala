@@ -3,6 +3,9 @@ import asyncio
 from components.header import main_header
 from components.card_container import card_container
 
+
+
+
 logs = [
     '[12:01:03] Подключение к источнику данных успешно.',
     '[12:01:05] Начат парсинг: Категория = Квартиры, Город = Шымкент.',

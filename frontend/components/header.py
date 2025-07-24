@@ -22,7 +22,7 @@ def main_header(content_func):
             'box-sizing: border-box;'
         ):
             ui.image('static/img/logo.png').style(
-                'width: 132px; height: 100px; object-fit: contain; margin-right: 16px;'
+                'width: 132px; height: 100px; object-fit: contain; margin-top: -28px; margin-right: 16px;'
             )
             
             with ui.row().style('gap: 29px;'):
